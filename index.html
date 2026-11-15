@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iFake — Modern Chat & Social Studio</title>
+<style>
+:root{--accent:#6257e8;--ink:#191a22;--muted:#777d8b;--line:#e9eaf0;--bg:#f4f5f9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.logo{font-size:23px;font-weight:850;letter-spacing:-1px}.logo span{color:var(--accent)}.tag{font-size:11px;color:var(--muted)}
+main{max-width:1160px;margin:20px auto;padding:0 14px;display:grid;grid-template-columns:minmax(290px,.92fr) minmax(320px,1.08fr);gap:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;box-shadow:0 8px 28px #20233a08;min-width:0}
+h2{font-size:15px;margin:0 0 12px}.section{margin-top:20px;padding-top:17px;border-top:1px solid var(--line)}
+.platforms{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.platform{border:1px solid var(--line);background:white;border-radius:11px;padding:11px 3px;font-weight:700;font-size:11px;cursor:pointer;color:#343642}.platform.active{border:1.5px solid var(--accent);background:#f1f0ff;color:var(--accent)}
+.modes{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}.mode{border:1px solid var(--line);background:#fff;border-radius:30px;padding:8px 13px;font-size:12px;font-weight:650;cursor:pointer}.mode.active{background:#191a22;color:#fff;border-color:#191a22}
+label{display:block;font-size:11px;font-weight:700;color:#606574;margin:11px 0 5px}
+input,select,textarea{width:100%;border:1px solid #e3e5ec;border-radius:10px;padding:10px 11px;font:inherit;font-size:13px;outline:none;background:white;color:#20212a}input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.btn{border:0;border-radius:10px;padding:10px 13px;font-size:12px;font-weight:750;cursor:pointer;background:#eff0f5;color:#30313b}.primary{background:var(--accent);color:#fff}.darkbtn{background:#191a22;color:#fff}.btn:active,.platform:active,.mode:active{transform:scale(.98)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.hint{font-size:10px;line-height:1.5;color:#858a97;margin-top:12px}
+.preview-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.preview-head h2{margin:0}.phone{width:min(100%,370px);margin:auto;border:8px solid #17181d;border-radius:36px;background:white;overflow:hidden;box-shadow:0 18px 45px #1112}
+.status{height:27px;padding:5px 17px 0;display:flex;justify-content:space-between;font-size:11px;font-weight:750;background:#fff}
+.screenhead{height:62px;display:flex;align-items:center;gap:9px;padding:8px 13px;border-bottom:1px solid #eee;background:#fff}
+.avatar{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#e5e3ff;color:#5549d4;font-weight:800;flex-shrink:0}
+.person{font-size:13px;font-weight:800}.presence{font-size:10px;color:#858a96;margin-top:2px}.headright{margin-left:auto;color:#555;font-size:19px}
+.chatbody{height:440px;overflow:auto;padding:13px 11px;display:flex;flex-direction:column;gap:8px;background:#f6f6fa}
+.bubble{max-width:79%;padding:9px 11px;border-radius:15px;font-size:13px;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere}
+.in{align-self:flex-start;background:#fff;border:1px solid #ececf1;border-bottom-left-radius:5px}.out{align-self:flex-end;background:#d9fdd3;border-bottom-right-radius:5px}
+.bubble small{display:block;text-align:right;font-size:9px;opacity:.65;margin-top:4px}
+.composer{height:55px;padding:8px 10px;display:flex;align-items:center;gap:8px;background:#fafafa;border-top:1px solid #eee}
+.fakeinput{flex:1;background:#fff;border:1px solid #e6e7ec;border-radius:20px;padding:9px 12px;font-size:11px;color:#999}.send{width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:#6257e8;color:white}
+.wa .chatbody{background:#efeae2;background-image:radial-gradient(#d8d0c4 .6px,transparent .6px);background-size:13px 13px}.wa .out{background:#d9fdd3}.wa .send{background:#128c7e}
+.ig .chatbody{background:#fff}.ig .in{background:#efeff3;border:0}.ig .out{background:linear-gradient(120deg,#7658df,#d34ca5);color:#fff}.ig .send{background:#c13da6}
+.im .chatbody{background:#fff}.im .out{background:#1685f8;color:white}.im .in{background:#e9e9eb;border:0}.im .send{background:#1685f8}
+.x .chatbody{background:#fff}.x .out{background:#1d9bf0;color:white}.x .in{background:#eff3f4;border:0}.x .send{background:#111}
+.postbody{height:495px;overflow:auto;background:#fff}
+.posttop{height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #eee;font-weight:850}
+.postuser{display:flex;align-items:center;gap:9px;padding:13px 13px 8px}.postuser .avatar{width:36px;height:36px}
+.postname{font-size:12px;font-weight:800}.handle{font-size:10px;color:#888;margin-top:2px}
+.posttext{font-size:13px;line-height:1.45;padding:5px 14px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.postimage{height:210px;background:linear-gradient(135deg,#e8e4ff,#f9dbe9,#d9efff);display:grid;place-items:center;color:#69627e;font-size:12px;margin:0 10px;border-radius:4px}
+.poststats{font-size:11px;color:#777;padding:11px 14px;border-bottom:1px solid #eee}.postactions{padding:10px 14px;display:flex;gap:18px;font-size:17px}
+.postnav{height:42px;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:center;color:#333;font-size:18px}
+.igpost .posttop{font-size:17px}.igpost .postimage{height:255px;background:linear-gradient(145deg,#f8d7e7,#e4dcff,#d6efff)}
+.xpost .posttop{font-size:20px}.xpost .postimage{height:180px;background:linear-gradient(135deg,#e6eff8,#dce7f4);border-radius:13px}
+.hidden{display:none!important}
+@media(max-width:760px){main{grid-template-columns:1fr;margin:12px auto;gap:12px}.previewpanel{order:-1}.panel{padding:15px}.chatbody{height:410px}.postbody{height:460px}header{padding:12px 15px}}
+@media print{header,main>.panel:first-child,.preview-head{display:none!important}body{background:white}main{display:block;margin:0;padding:0}.panel{border:0;box-shadow:none;padding:0}.phone{border:0;box-shadow:none}}
+</style></head>
+<body>
+<header><div><div class="logo">i<span>Fake</span></div><div class="tag">Modern Chat & Social Studio · Prototype 02</div></div><div class="tag">SIMULATION ONLY</div></header>
+<main>
+<section class="panel">
+<h2>1. Pilih platform</h2>
+<div class="platforms">
+<button type="button" class="platform active" data-platform="wa">WhatsApp</button>
+<button type="button" class="platform" data-platform="ig">Instagram</button>
+<button type="button" class="platform" data-platform="im">iMessage</button>
+<button type="button" class="platform" data-platform="x">X</button>
+</div>
+<div class="section" style="margin-top:16px;padding-top:14px">
+<h2>2. Pilih jenis paparan</h2>
+<div class="modes" id="modes">
+<button type="button" class="mode active" data-mode="chat">Chat / DM</button>
+<button type="button" class="mode hidden" data-mode="post" id="postMode">Post</button>
+</div>
+<div id="profileFields">
+<div class="grid2"><div><label>Nama paparan</label><input id="displayName" value="Aiman"></div><div><label>Username / handle</label><input id="handle" value="@aiman"></div></div>
+<div class="grid2"><div><label>Inisial avatar</label><input id="initial" value="A" maxlength="3"></div><div><label>Status / bio ringkas</label><input id="presence" value="online"></div></div>
+</div>
+<div id="chatFields">
+<div class="grid2"><div><label>Masa status bar</label><input id="clock" value="9:41"></div><div><label>Masa mesej</label><input id="msgtime" value="9:41 AM"></div></div>
+<label>Teks mesej</label><textarea id="message" rows="3" placeholder="Taip mesej..."></textarea>
+<div class="grid2"><div><label>Penghantar</label><select id="sender"><option value="out">Saya (kanan)</option><option value="in">Dia (kiri)</option></select></div><div><label>Status mesej</label><select id="ticks"><option value="read">✓✓ Dibaca</option><option value="sent">✓ Dihantar</option><option value="none">Tiada tick</option></select></div></div>
+<div class="actions"><button type="button" class="btn primary" id="addMessage">＋ Tambah mesej</button><button type="button" class="btn" id="clearChat">Kosongkan chat</button></div>
+</div>
+<div id="postFields" class="hidden">
+<label>Teks post / caption</label><textarea id="postText" rows="4" placeholder="Apa yang ingin dikongsikan?"></textarea>
+<div class="grid2"><div><label>Likes</label><input id="likes" value="1,248"></div><div><label>Comments / replies</label><input id="comments" value="86"></div></div>
+<div class="grid2"><div><label>Tarikh / masa</label><input id="postDate" value="2h"></div><div><label>Lokasi (optional)</label><input id="location" placeholder="Contoh: Kuala Lumpur"></div></div>
+<label>Gaya post</label><select id="postStyle"><option value="image">Post dengan ruang gambar</option><option value="text">Text sahaja</option></select>
+<div class="actions"><button type="button" class="btn primary" id="updatePost">↻ Kemas kini post</button></div>
+</div>
+<div class="section"><h2>3. Preview & export</h2><div class="actions"><button type="button" class="btn" id="sample">Muat contoh</button><button type="button" class="btn" id="print">Cetak / Simpan PDF</button></div>
+<p class="hint">iFake menghasilkan mockup rekaan sahaja. Kandungan tidak dihantar ke platform sebenar dan tidak patut digunakan sebagai bukti komunikasi atau hantaran sebenar.</p></div>
+</section>
+<section class="panel previewpanel">
+<div class="preview-head"><h2>Live preview</h2><span class="tag" id="previewLabel">WhatsApp · Chat</span></div>
+<div class="phone wa" id="phone">
+<div class="status"><span id="statusClock">9:41</span><span>●●●　Wi-Fi　▰</span></div>
+<div class="screenhead" id="chatHeader"><div class="avatar" id="avatar">A</div><div><div class="person" id="previewName">Aiman</div><div class="presence" id="previewPresence">online</div></div><div class="headright">⌕　⋮</div></div>
+<div class="chatbody" id="chatBody"></div>
+<div class="composer" id="composer"><span style="font-size:20px;color:#888">＋</span><div class="fakeinput">Message</div><div class="send">➤</div></div>
+<div class="postbody hidden" id="postBody">
+<div class="posttop" id="postTop">Instagram <span>＋　♡　✉</span></div>
+<div class="postuser"><div class="avatar" id="postAvatar">A</div><div><div class="postname" id="postName">Aiman</div><div class="handle" id="postHandle">@aiman</div></div><div class="headright">•••</div></div>
+<div class="posttext" id="renderPostText">Your post text appears here.</div>
+<div class="postimage" id="postImage">IMAGE / MEDIA PREVIEW</div>
+<div class="postactions"><span>♡</span><span>◯</span><span>➤</span><span style="margin-left:auto">♧</span></div>
+<div class="poststats" id="postStats">1,248 likes<br>View all 86 comments · 2h</div>
+<div class="postnav"><span>⌂</span><span>⌕</span><span>＋</span><span>♡</span><span>◉</span></div>
+</div>
+</div>
+</section>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+let platform='wa',mode='chat',messages=[];
+const platformNames={wa:'WhatsApp',ig:'Instagram',im:'iMessage',x:'X'};
+function setMode(next){
+ mode=next;
+ document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+ $('chatFields').classList.toggle('hidden',mode!=='chat');
+ $('postFields').classList.toggle('hidden',mode!=='post');
+ $('chatHeader').classList.toggle('hidden',mode==='post');
+ $('chatBody').classList.toggle('hidden',mode==='post');
+ $('composer').classList.toggle('hidden',mode==='post');
+ $('postBody').classList.toggle('hidden',mode!=='post');
+ $('previewLabel').textContent=platformNames[platform]+' · '+(mode==='chat'?'Chat':'Post');
+}
+function setPlatform(next){
+ platform=next;
+ document.querySelectorAll('.platform').forEach(b=>b.classList.toggle('active',b.dataset.platform===platform));
+ $('phone').className='phone '+platform;
+ $('postMode').classList.toggle('hidden',!['ig','x'].includes(platform));
+ if(!['ig','x'].includes(platform)&&mode==='post')setMode('chat');
+ else setMode(mode);
+ $('postTop').innerHTML=platform==='x'?'𝕏 <span>✧</span>':'Instagram <span>＋　♡　✉</span>';
+ $('postBody').className='postbody '+(platform==='ig'?'igpost':'xpost')+(mode==='post'?'':' hidden');
+ render();
+}
+function render(){
+ $('previewName').textContent=$('displayName').value||'Contact';
+ $('previewPresence').textContent=$('presence').value;
+ $('avatar').textContent=$('initial').value||'?';
+ $('postAvatar').textContent=$('initial').value||'?';
+ $('postName').textContent=$('displayName').value||'Account';
+ $('postHandle').textContent=$('handle').value||'@username';
+ $('statusClock').textContent=$('clock').value;
+ $('chatBody').replaceChildren();
+ messages.forEach(m=>{
+  const b=document.createElement('div');b.className='bubble '+(m.sender==='out'?'out':'in');b.append(document.createTextNode(m.text));
+  const s=document.createElement('small');s.textContent=m.time+(m.sender==='out'&&platform==='wa'?(m.ticks==='read'?'　✓✓':m.ticks==='sent'?'　✓':''):'');b.appendChild(s);$('chatBody').appendChild(b);
+ });
+ $('chatBody').scrollTop=$('chatBody').scrollHeight;
+ $('renderPostText').textContent=$('postText').value||'Your post text appears here.';
+ $('postStats').innerHTML=$('likes').value+' likes<br>View all '+$('comments').value+' comments · '+$('postDate').value;
+ $('postImage').classList.toggle('hidden',$('postStyle').value==='text');
+ $('postImage').textContent=$('location').value?'MEDIA PREVIEW · '+$('location').value:'IMAGE / MEDIA PREVIEW';
+ $('previewLabel').textContent=platformNames[platform]+' · '+(mode==='chat'?'Chat':'Post');
+}
+document.querySelectorAll('.platform').forEach(b=>b.addEventListener('click',()=>setPlatform(b.dataset.platform)));
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{if(!b.classList.contains('hidden')){setMode(b.dataset.mode);render()}}));
+$('addMessage').addEventListener('click',()=>{const text=$('message').value.trim();if(!text)return;messages.push({text,sender:$('sender').value,time:$('msgtime').value,ticks:$('ticks').value});$('message').value='';render()});
+$('clearChat').addEventListener('click',()=>{messages=[];render()});
+$('sample').addEventListener('click',()=>{
+ if(mode==='post'){$('postText').value=platform==='x'?'Little moments, big memories. ✨\\nWhat a day!':'A little photo dump from today 💗✨';$('likes').value='2,406';$('comments').value='124';$('postDate').value='2h';}
+ else messages=[{text:'Hey, awak free tak malam ni?',sender:'in',time:'9:38 AM',ticks:'none'},{text:'Rasanya free. Kenapa?',sender:'out',time:'9:39 AM',ticks:'read'},{text:'Nak cerita sesuatu 👀',sender:'in',time:'9:40 AM',ticks:'none'}];
+ render();
+});
+['displayName','handle','initial','presence','clock','postText','likes','comments','postDate','location','postStyle'].forEach(id=>$(id).addEventListener('input',render));
+$('updatePost').addEventListener('click',render);
+$('print').addEventListener('click',()=>window.print());
+setPlatform('wa');setMode('chat');render();
+})();
+</script></body></html>
